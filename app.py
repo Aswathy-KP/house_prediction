@@ -1,10 +1,14 @@
 from flask import Flask, request, jsonify, render_template
 import joblib
 import numpy as np
+import os
 
 app = Flask(__name__)
 
-model = joblib.load('C:\Desktop\House_prediction_model\model.pkl')
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, "model.pkl")
+
+model = joblib.load(MODEL_PATH)
 
 @app.route('/')
 def home():
@@ -13,7 +17,7 @@ def home():
 @app.route('/predict', methods=['POST'])
 def predict():
     data = request.get_json()
-    features = np.array([[
+    features = np.array([[ 
         data['area'],
         data['bedrooms'],
         data['bathrooms'],
